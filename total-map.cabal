@@ -1,6 +1,6 @@
 Name:                total-map
 Version:             0.0.0
-Cabal-Version:       >= 1.2
+Cabal-Version:       >= 1.6
 Synopsis:            Finitely represented /total/ maps
 Category:            
 Description:
@@ -16,10 +16,10 @@ build-type:          Simple
 
 -- Wait until Cabal 1.6 is more wide-spread and then add the following
 -- in place of the Package-Url field and bump Cabal-Version to >= 1.6.
--- 
--- Source-Repository head
---     type:         darcs
---     location:     http://github.com/conal/total-map
+
+Source-Repository head
+    type:         git
+    location:     http://github.com/conal/total-map
 
 Library
   hs-Source-Dirs:      src
