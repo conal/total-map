@@ -13,7 +13,7 @@
 -- a default value. Has Applicative and Monad instances (unlike "Data.Map").
 ----------------------------------------------------------------------
 
-module Data.TotalMap (TMap,trim,(!),tabulate) where
+module Data.TotalMap (TMap,(!),tabulate,trim) where
 
 import Data.Monoid (Monoid(..))
 import Control.Applicative (Applicative(..),(<$>))
@@ -38,7 +38,7 @@ tabulate :: Eq k => v -> Set k -> (k -> v) -> TMap k v
 tabulate dflt keys f = TMap dflt (f <$> idMap keys)
 
 -- | Optimize a 'TMap', weeding out any explicit default values.
--- A semantic no-op.
+-- A semantic no-op, i.e., @(!) . trim == (!)@.
 trim :: (Ord k, Eq v) => TMap k v -> TMap k v
 trim (TMap dflt m) = TMap dflt (M.filter (/= dflt) m)
 
