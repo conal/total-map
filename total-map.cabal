@@ -24,5 +24,6 @@ build-type:          Simple
 Library
   hs-Source-Dirs:      src
   Extensions:
-  Build-Depends:       base<5
+  Build-Depends:       base<5, containers
   Exposed-Modules:     
+                       Data.TotalMap
