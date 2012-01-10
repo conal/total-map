@@ -1,5 +1,5 @@
 Name:                total-map
-Version:             0.0.0
+Version:             0.0.1
 Cabal-Version:       >= 1.6
 Synopsis:            Finitely represented /total/ maps
 Category:            
@@ -13,13 +13,9 @@ License:             BSD3
 License-File:        COPYING
 Stability:           experimental
 build-type:          Simple
-
--- Wait until Cabal 1.6 is more wide-spread and then add the following
--- in place of the Package-Url field and bump Cabal-Version to >= 1.6.
-
 Source-Repository head
     type:         git
-    location:     http://github.com/conal/total-map
+    location:     git://github.com/conal/total-map.git
 
 Library
   hs-Source-Dirs:      src
