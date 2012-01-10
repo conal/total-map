@@ -16,3 +16,5 @@ For instance, `(!)` must be a monoid (homo)morphism, i.e.,
 
     (!) mempty == mempty
     (!) (s `mappend` t) == (!) s `mappend` (!) t
+
+The current implementation of `TMap` is via `Data.Map`.
