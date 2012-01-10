@@ -1,5 +1,5 @@
 Name:                total-map
-Version:             0.0.1
+Version:             0.0.2
 Cabal-Version:       >= 1.6
 Synopsis:            Finitely represented /total/ maps
 Category:            
@@ -13,6 +13,7 @@ License:             BSD3
 License-File:        COPYING
 Stability:           experimental
 build-type:          Simple
+Homepage:            http://github.com/conal/total-map/
 Source-Repository head
     type:         git
     location:     git://github.com/conal/total-map.git
