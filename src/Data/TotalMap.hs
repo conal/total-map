@@ -28,6 +28,8 @@ import qualified Data.Set as S
 -- | Total map
 data TMap k v = TMap v (Map k v) deriving Functor
 
+-- The representation is a default value and a finite map for the rest.
+
 -- | Sample a total map. Semantic function.
 (!) :: Ord k => TMap k v -> k -> v
 TMap dflt m ! k = fromMaybe dflt (M.lookup k m)
