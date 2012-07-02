@@ -1,8 +1,8 @@
 Name:                total-map
-Version:             0.0.3
+Version:             0.0.4
 Cabal-Version:       >= 1.6
 Synopsis:            Finitely represented /total/ maps
-Category:            
+Category:            Data
 Description:
   Finitely represented /total/ maps. Represented by as a partial map and a default value.
   Has Applicative and Monad instances (unlike Data.Map).
