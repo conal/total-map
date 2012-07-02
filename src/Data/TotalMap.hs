@@ -16,14 +16,15 @@
 module Data.TotalMap (TMap,(!),tabulate,trim) where
 
 import Data.Monoid (Monoid(..))
-import Control.Applicative (Applicative(..),(<$>))
+import Control.Applicative (Applicative(..),liftA2,(<$>))
 import Data.Maybe (fromMaybe)
 
 import Data.Map (Map)
 import qualified Data.Map as M
-
 import Data.Set (Set)
 import qualified Data.Set as S
+
+-- import Control.Comonad  -- TODO
 
 -- | Total map
 data TMap k v = TMap v (Map k v) deriving Functor
@@ -49,6 +50,17 @@ trim (TMap dflt m) = TMap dflt (M.filter (/= dflt) m)
 tabulate' :: (Ord k, Eq v) => v -> Set k -> (k -> v) -> TMap k v
 tabulate' = (fmap.fmap.fmap) trim tabulate
 -}
+
+{--------------------------------------------------------------------
+    Instances
+--------------------------------------------------------------------}
+
+-- These instances follow the principle that semantic functions (here (!))
+-- must be type class morphism (TCM) for all inhabited type classes.
+
+instance (Ord k, Monoid v) => Monoid (TMap k v) where
+  mempty  = pure mempty
+  mappend = liftA2 mappend
 
 instance Ord k => Applicative (TMap k) where
   pure v = TMap v mempty
@@ -100,6 +112,13 @@ TMap (dd,M.mapWithKey (flip (!)) mtm `M.union` dm) :: TMap k v
 spec:
 
 -}
+
+{--------------------------------------------------------------------
+    Comonad
+--------------------------------------------------------------------}
+
+-- TODO: Based on the function-of-monoid comonad.
+-- TODO: Also a version with a pointer.
 
 {--------------------------------------------------------------------
     Misc
