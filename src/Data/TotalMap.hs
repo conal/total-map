@@ -15,7 +15,7 @@
 
 module Data.TotalMap (TMap,(!),tabulate,trim) where
 
-import Data.Monoid (Monoid(..))
+import Data.Monoid (Monoid(..),(<>))
 import Control.Applicative (Applicative(..),liftA2,(<$>))
 import Data.Maybe (fromMaybe)
 
@@ -68,6 +68,18 @@ instance Ord k => Applicative (TMap k) where
     tabulate (df dx)
              (M.keysSet mf `mappend` M.keysSet mx)
              ((!) fs <*> (!) xs)
+
+{- |
+Alternative implementation of (<*>) using complex Map operations.
+Might be more efficient.
+Can be used for testing against the canonical implementation above.
+-}
+_app :: Ord k => TMap k (a -> b) -> TMap k a -> TMap k b
+_app (TMap fd fm) (TMap ad am) =
+   TMap (fd ad) $
+      fmap ($ad) (M.difference fm am) <>
+      fmap (fd$) (M.difference am fm) <>
+      M.intersectionWith ($) fm am
 
 -- Note: I'd like to 'trim' the tabulate result in <*>, but doing so would
 -- require the Eq constraint on values, which breaks Applicative.
