@@ -61,7 +61,7 @@ instance (Ord k, Monoid v) => Monoid (TMap k v) where
   mempty  = pure mempty
   mappend = liftA2 mappend
 
-instance Ord k => Functor (TMap k) where
+instance Functor (TMap k) where
   fmap f (TMap d m) = TMap (f d) (fmap f m)
 
 instance Ord k => Applicative (TMap k) where
