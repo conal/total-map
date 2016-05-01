@@ -1,4 +1,3 @@
-{-# LANGUAGE DeriveFunctor, GeneralizedNewtypeDeriving, TypeOperators #-}
 {-# OPTIONS_GHC -Wall #-}
 ----------------------------------------------------------------------
 -- |
@@ -27,7 +26,7 @@ import qualified Data.Set as S
 -- import Control.Comonad  -- TODO
 
 -- | Total map
-data TMap k v = TMap v (Map k v) deriving Functor
+data TMap k v = TMap v (Map k v)
 
 -- The representation is a default value and a finite map for the rest.
 
@@ -72,6 +71,9 @@ intersectionPartialWith f (TMap ad am) bm =
 instance (Ord k, Monoid v) => Monoid (TMap k v) where
   mempty  = pure mempty
   mappend = liftA2 mappend
+
+instance Functor (TMap k) where
+  fmap f (TMap d m) = TMap (f d) (fmap f m)
 
 instance Ord k => Applicative (TMap k) where
   pure v = TMap v mempty
