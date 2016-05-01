@@ -13,7 +13,7 @@
 -- a default value. Has Applicative and Monad instances (unlike "Data.Map").
 ----------------------------------------------------------------------
 
-module Data.TotalMap (TMap,(!),tabulate,trim) where
+module Data.TotalMap (TMap,(!),tabulate,trim,intersectionPartialWith) where
 
 import Data.Monoid (Monoid(..))
 import Control.Applicative (Applicative(..),liftA2,(<$>))
@@ -50,6 +50,17 @@ trim (TMap dflt m) = TMap dflt (M.filter (/= dflt) m)
 tabulate' :: (Ord k, Eq v) => v -> Set k -> (k -> v) -> TMap k v
 tabulate' = (fmap.fmap.fmap) trim tabulate
 -}
+
+{- |
+Intersect a total map with a partial one using an element combinator.
+-}
+intersectionPartialWith ::
+   (Ord k) =>
+   (a -> b -> c) -> TMap k a -> Map k b -> Map k c
+intersectionPartialWith f (TMap ad am) bm =
+   M.intersectionWith f am bm
+   `M.union`
+   fmap (f ad) bm
 
 {--------------------------------------------------------------------
     Instances

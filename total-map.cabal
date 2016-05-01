@@ -1,5 +1,5 @@
 Name:                total-map
-Version:             0.0.4
+Version:             0.0.5
 Cabal-Version:       >= 1.6
 Synopsis:            Finitely represented /total/ maps
 Category:            Data
