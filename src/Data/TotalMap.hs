@@ -12,7 +12,7 @@
 -- a default value. Has Applicative and Monad instances (unlike "Data.Map").
 ----------------------------------------------------------------------
 
-module Data.TotalMap (TMap,(!),tabulate,trim,intersectionPartialWith) where
+module Data.TotalMap (TMap,fromPartial,(!),tabulate,trim,intersectionPartialWith) where
 
 import Data.Monoid (Monoid(..),(<>))
 import Control.Applicative (Applicative(..),liftA2,(<$>))
@@ -29,6 +29,10 @@ import qualified Data.Set as S
 data TMap k v = TMap v (Map k v)
 
 -- The representation is a default value and a finite map for the rest.
+
+-- | Create a total map from a default value and a partial map.
+fromPartial :: a -> Map k a -> TMap k a
+fromPartial = TMap
 
 -- | Sample a total map. Semantic function.
 (!) :: Ord k => TMap k v -> k -> v
@@ -50,9 +54,7 @@ tabulate' :: (Ord k, Eq v) => v -> Set k -> (k -> v) -> TMap k v
 tabulate' = (fmap.fmap.fmap) trim tabulate
 -}
 
-{- |
-Intersect a total map with a partial one using an element combinator.
--}
+-- | Intersect a total map with a partial one using an element combinator.
 intersectionPartialWith ::
    (Ord k) =>
    (a -> b -> c) -> TMap k a -> Map k b -> Map k c
@@ -82,11 +84,9 @@ instance Ord k => Applicative (TMap k) where
              (M.keysSet mf `mappend` M.keysSet mx)
              ((!) fs <*> (!) xs)
 
-{- |
-Alternative implementation of (<*>) using complex Map operations.
-Might be more efficient.
-Can be used for testing against the canonical implementation above.
--}
+-- | Alternative implementation of (<*>) using complex Map operations. Might be
+-- more efficient. Can be used for testing against the canonical implementation
+-- above.
 _app :: Ord k => TMap k (a -> b) -> TMap k a -> TMap k b
 _app (TMap fd fm) (TMap ad am) =
    TMap (fd ad) $
