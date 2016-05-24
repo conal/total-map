@@ -12,7 +12,7 @@
 -- a default value. Has Applicative and Monad instances (unlike "Data.Map").
 ----------------------------------------------------------------------
 
-module Data.TotalMap (TMap,fromPartial,(!),tabulate,trim,intersectionPartialWith) where
+module Data.TotalMap (TMap,fromPartial,(!),tabulate,trim,intersectionPartialWith,codomain) where
 
 import Data.Monoid (Monoid(..),(<>))
 import Control.Applicative (Applicative(..),liftA2,(<$>))
@@ -62,6 +62,10 @@ intersectionPartialWith f (TMap ad am) bm =
    M.intersectionWith f am bm
    `M.union`
    fmap (f ad) bm
+
+-- | Witness the finiteness of the support concretely by giving its image.
+codomain :: Ord v => TMap k v -> Set v
+codomain (TMap dflt m) = S.fromList (dflt:M.elems m)
 
 {--------------------------------------------------------------------
     Instances
