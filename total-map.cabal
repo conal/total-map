@@ -1,11 +1,11 @@
 Name:                total-map
-Version:             0.0.5
+Version:             0.0.6
 Cabal-Version:       >= 1.6
 Synopsis:            Finitely represented /total/ maps
 Category:            Data
 Description:
-  Finitely represented /total/ maps. Represented by as a partial map and a default value.
-  Has Applicative and Monad instances (unlike Data.Map).
+  Finitely represented /total/ maps. Represented by as a partial map and
+  a default value. Has Applicative and Monad instances (unlike Data.Map).
 Author:              Conal Elliott
 Maintainer:          conal@conal.net
 Copyright:           (c) 2012 by Conal Elliott

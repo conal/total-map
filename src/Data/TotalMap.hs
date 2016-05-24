@@ -65,7 +65,7 @@ intersectionPartialWith f (TMap ad am) bm =
 
 -- | Witness the finiteness of the support concretely by giving its image.
 codomain :: Ord v => TMap k v -> Set v
-codomain (TMap dflt m) = S.fromList (dflt:M.elems m)
+codomain (TMap dflt m) = S.fromList (dflt : M.elems m)
 
 {--------------------------------------------------------------------
     Instances
