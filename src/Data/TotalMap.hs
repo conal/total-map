@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# OPTIONS_GHC -Wall #-}
 ----------------------------------------------------------------------
 -- |
@@ -17,6 +18,9 @@ module Data.TotalMap (TMap,fromPartial,(!),tabulate,trim,intersectionPartialWith
 import Data.Monoid (Monoid(..),(<>))
 import Control.Applicative (Applicative(..),liftA2,(<$>))
 import Data.Maybe (fromMaybe)
+#if MIN_VERSION_base(4,11,0)
+import qualified Data.Semigroup as Sem
+#endif
 
 import Data.Map (Map)
 import qualified Data.Map as M
@@ -73,6 +77,11 @@ codomain (TMap dflt m) = S.fromList (dflt : M.elems m)
 
 -- These instances follow the principle that semantic functions (here (!))
 -- must be type class morphism (TCM) for all inhabited type classes.
+
+#if MIN_VERSION_base(4,11,0)
+instance (Ord k, Sem.Semigroup v) => Sem.Semigroup (TMap k v) where
+  (<>) = liftA2 (<>)
+#endif
 
 instance (Ord k, Monoid v) => Monoid (TMap k v) where
   mempty  = pure mempty
