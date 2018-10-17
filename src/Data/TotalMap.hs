@@ -26,6 +26,7 @@ import Data.Map (Map)
 import qualified Data.Map as M
 import Data.Set (Set)
 import qualified Data.Set as S
+import Data.Semiring
 
 -- import Control.Comonad  -- TODO
 
@@ -150,6 +151,16 @@ TMap (dd,M.mapWithKey (flip (!)) mtm `M.union` dm) :: TMap k v
 spec:
 
 -}
+
+instance (Ord k, Semiring v) => Semiring (TMap k v) where
+  zero = pure zero
+  one = pure one
+  (<+>) = liftA2 (<+>)
+  (<.>) = liftA2 (<.>)
+
+instance (Ord k, StarSemiring v) => StarSemiring (TMap k v) where
+  star = fmap star
+  plus = fmap plus
 
 {--------------------------------------------------------------------
     Comonad
