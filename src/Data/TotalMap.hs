@@ -13,7 +13,11 @@
 -- a default value. Has Applicative and Monad instances (unlike "Data.Map").
 ----------------------------------------------------------------------
 
-module Data.TotalMap (TMap,fromPartial,(!),tabulate,trim,intersectionPartialWith,codomain) where
+module Data.TotalMap
+  ( TMap,fromPartial,(!),tabulate,trim
+  , intersectionPartialWith,codomain
+  -- , tmapRepr
+  ) where
 
 import Data.Monoid (Monoid(..),(<>))
 import Control.Applicative (Applicative(..),liftA2,(<$>))
@@ -31,7 +35,7 @@ import Data.Semiring
 -- import Control.Comonad  -- TODO
 
 -- | Total map
-data TMap k v = TMap v (Map k v)
+data TMap k v = TMap v (Map k v) deriving Show
 
 -- The representation is a default value and a finite map for the rest.
 
@@ -39,6 +43,7 @@ data TMap k v = TMap v (Map k v)
 fromPartial :: a -> Map k a -> TMap k a
 fromPartial = TMap
 
+infixl 9 !
 -- | Sample a total map. Semantic function.
 (!) :: Ord k => TMap k v -> k -> v
 TMap dflt m ! k = fromMaybe dflt (M.lookup k m)
@@ -162,6 +167,9 @@ instance (Ord k, StarSemiring v) => StarSemiring (TMap k v) where
   star = fmap star
   plus = fmap plus
 
+instance (Ord k, DetectableZero v) => DetectableZero (TMap k v) where
+  isZero (TMap d m) = isZero d && M.null m -- or: isZero d && all isZero (elems m)
+
 {--------------------------------------------------------------------
     Comonad
 --------------------------------------------------------------------}
@@ -177,3 +185,7 @@ idMap :: Eq k => Set k -> Map k k
 idMap = M.fromAscList . map (\ k -> (k,k)) . S.toAscList
 
 -- or ... map (join (,)) ...
+
+-- -- | Reveal representation. For use while experimenting.
+-- tmapRepr :: TMap k v -> (v, Map k v)
+-- tmapRepr (TMap d m) = (d,m)
