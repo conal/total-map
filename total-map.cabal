@@ -1,7 +1,7 @@
 Name:                total-map
 Version:             0.1.0
 Cabal-Version:       >= 1.10
-Synopsis:            Finitely represented /total/ maps
+Synopsis:            Finitely represented total maps
 Category:            Data
 Description:
   Finitely represented /total/ maps. Represented by as a partial map and
