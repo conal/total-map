@@ -88,6 +88,7 @@ intersectionPartialWith f (TMap ad am) bm =
    `M.union`
    fmap (f ad) bm
 
+{-# DEPRECATED range "Non-denotative" #-}
 -- | Witness the finiteness of the support concretely by giving its image.
 range :: Ord v => TMap k v -> Set v
 range (TMap dflt m) = S.fromList (dflt : M.elems m)
