@@ -10,7 +10,7 @@ resolver: lts-12.4 # ghc-8.4.3
 # resolver: lts-14.14 # ghc-8.6.5
 
 extra-deps:
-  - semiring-num-1.6.0.3
+  - semiring-num-1.6.0.4
 
 # When https://github.com/oisdk/semiring-num/pull/2 is merged and released to
 # Hackage, switch to it, and re-try GHC 8.4.3 and later.

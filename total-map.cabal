@@ -24,7 +24,7 @@ Source-Repository head
 Library
   hs-Source-Dirs:      src
   Extensions:
-  Build-Depends:       base<5, containers, semiring-num
+  Build-Depends:       base<5, containers, semiring-num>=1.6.0.4
   Exposed-Modules:     
                        Data.TotalMap
   default-language: Haskell2010
