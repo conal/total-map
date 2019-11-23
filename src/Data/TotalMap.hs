@@ -3,7 +3,7 @@
 ----------------------------------------------------------------------
 -- |
 -- Module      :  Data.TotalMap
--- Copyright   :  (c) Conal Elliott 2012
+-- Copyright   :  (c) Conal Elliott 2012--2019
 -- License     :  BSD3
 -- 
 -- Maintainer  :  conal@conal.net
@@ -14,8 +14,11 @@
 ----------------------------------------------------------------------
 
 module Data.TotalMap
-  ( TMap,fromPartial,(!),tabulate,trim
-  , intersectionPartialWith,codomain
+  ( TMap,fromPartial
+  , empty, insert, singleton
+  , (!),tabulate,trim
+  , intersectionPartialWith,range
+  , mapKeysWith
   -- , tmapRepr
   ) where
 
@@ -40,8 +43,20 @@ data TMap k v = TMap v (Map k v) deriving Show
 -- The representation is a default value and a finite map for the rest.
 
 -- | Create a total map from a default value and a partial map.
-fromPartial :: a -> Map k a -> TMap k a
+fromPartial :: v -> Map k v -> TMap k v
 fromPartial = TMap
+
+-- | A total map only default
+empty :: v -> TMap k v
+empty v = TMap v M.empty
+
+-- | Insert a key\/value pair
+insert :: Ord k => k -> v -> TMap k v -> TMap k v
+insert k v (TMap d m) = TMap d (M.insert k v m)
+
+-- | Singleton plus default
+singleton :: Ord k => k -> v -> v -> TMap k v
+singleton k v d = insert k v (empty d)
 
 infixl 9 !
 -- | Sample a total map. Semantic function.
@@ -74,8 +89,8 @@ intersectionPartialWith f (TMap ad am) bm =
    fmap (f ad) bm
 
 -- | Witness the finiteness of the support concretely by giving its image.
-codomain :: Ord v => TMap k v -> Set v
-codomain (TMap dflt m) = S.fromList (dflt : M.elems m)
+range :: Ord v => TMap k v -> Set v
+range (TMap dflt m) = S.fromList (dflt : M.elems m)
 
 {--------------------------------------------------------------------
     Instances
@@ -180,6 +195,12 @@ instance (Ord k, DetectableZero v) => DetectableZero (TMap k v) where
 {--------------------------------------------------------------------
     Misc
 --------------------------------------------------------------------}
+
+mapKeysWith :: (Semiring z, Ord b) => (z -> z -> z) -> (a -> b) -> TMap a z -> TMap b z
+mapKeysWith comb f (TMap d m) = TMap d (M.mapKeysWith comb f m)
+
+-- liftA2Keys :: Ord b => (a -> b -> c) -> TMap a z -> TMap b z -> TMap c z
+-- liftA2Keys f (TMap c m) (TMap d n) = ... -- ??
 
 idMap :: Eq k => Set k -> Map k k
 idMap = M.fromAscList . map (\ k -> (k,k)) . S.toAscList
